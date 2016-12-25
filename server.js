@@ -7,11 +7,12 @@ let server = net.createServer((socket) => {
 
   socket.on('data', (chunk) => {
     counter++;
-    console.log('message count is ' + counter);
-    socket.write(`Messaging from client: ${chunk}`);
-    console.log(`The message from client is: ${chunk}`);
+    //console.log('message count is ' + counter);
+    //socket.write(`Messaging from client: ${chunk}`);
+    console.log(`Client: ${chunk}`);
+    process.stdin.pipe(socket);
+
   });
-  process.stdin.pipe(socket);
 });
 
 server.listen(9000, '0.0.0.0',  () => {
