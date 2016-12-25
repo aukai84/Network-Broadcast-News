@@ -7,10 +7,13 @@ let server = net.createServer((socket) => {
 
   socket.on('data', (chunk) => {
     counter++;
-    socket.write('the current message count is ' + counter);
+    console.log('message count is ' + counter);
+    socket.write(`Messaging from client: ${chunk}`);
+    console.log(`The message from client is: ${chunk}`);
   });
+  process.stdin.pipe(socket);
 });
 
-server.listen(9001, '0.0.0.0',  () => {
-  console.log('opened sever on ' + server.address());
+server.listen(9000, '0.0.0.0',  () => {
+  console.log('opened sever on ', server.address());
 });
