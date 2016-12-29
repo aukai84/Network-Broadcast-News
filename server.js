@@ -23,7 +23,7 @@ let server = net.createServer((socket) => {
   socket.on('data', (chunk) => {
     counter++;
     //socket.write(`Message from ${socket.name} > ${chunk}`);
-    process.stdout.write(`Message from ${socket.name} > ${chunk}`);
+    process.stdout.write(`BROADCAST MESSAGE FROM ${socket.name} > ${chunk}`);
     broadcast(`Message from ${socket.name} > ${chunk}`, socket);
     //removes client from array on end, broadcast message letting clients know someone left
     socket.on('end', () => {
