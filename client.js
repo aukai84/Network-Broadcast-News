@@ -9,5 +9,5 @@ client.on('connect', (chunk) => {
 });
 
 client.on('data', (chunk) => {
-  console.log(`Server: ${chunk}`);
+  process.stdout.write(chunk);
 });
