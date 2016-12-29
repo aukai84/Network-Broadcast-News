@@ -11,19 +11,25 @@ let server = net.createServer((socket) => {
     //add new clients to clients array
     clients.push(socket);
     socket.write(`Welcome ${socket.name} to the sever!\n`);
-
-  socket.on('data', (chunk) => {
-    counter++;
-    //socket.write(`Message from ${socket.name} > ${chunk}`);
-    process.stdout.write(`Message from ${socket.name} > ${chunk}`);
-    broadcast(`Message from ${socket.name} > ${chunk}`, socket);
-
+    broadcast(`${socket.name} has joined the server \n`);
+    //broadcast function to send messages to all clients except sender
     function broadcast(message, sender) {
       clients.forEach((client) => {
         if(client === sender) return;
         client.write(message);
       });
     }
+
+  socket.on('data', (chunk) => {
+    counter++;
+    //socket.write(`Message from ${socket.name} > ${chunk}`);
+    process.stdout.write(`Message from ${socket.name} > ${chunk}`);
+    broadcast(`Message from ${socket.name} > ${chunk}`, socket);
+    //removes client from array on end, broadcast message letting clients know someone left
+    socket.on('end', () => {
+      clients.splice(clients.indexOf(socket), 1);
+      broadcast(`${socket.name} has left the chat \n`);
+    });
 
   });
 });
