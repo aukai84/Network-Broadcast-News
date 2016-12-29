@@ -21,7 +21,11 @@ let server = net.createServer((socket) => {
       }
     }
 
+  socket.write("Please type in a username!");
+
   socket.on('data', (chunk) => {
+
+    socket.name = chunk;
     counter++;
     //socket.write(`Message from ${socket.name} > ${chunk}`);
     process.stdout.write(`BROADCAST MESSAGE FROM ${socket.name} > ${chunk}`);
