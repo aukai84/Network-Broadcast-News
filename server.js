@@ -3,30 +3,23 @@
 const net = require('net');
 
 let clients = [];
-let counter = 0;
+
 let server = net.createServer((socket) => {
 
   //identify each client by address...will try to add username
-    socket.name = socket.remoteAddress + ':' + socket.remotePort;
+  socket.name = socket.remoteAddress + ':' + socket.remotePort;
     //add new clients to clients array
-    clients.push(socket);
-    socket.write(`Welcome ${socket.name} to the sever!\n`);
-    broadcast(`${socket.name} has joined the server \n`);
-    //broadcast function to send messages to all clients except sender
-    function broadcast(message) {
-      for(let i = 0; i < clients.length; i++){
-        if(clients[i] !== socket){
-          clients[i].write(message);
-        }
-      }
-    }
+  clients.push(socket);
+
+  socket.write(`Welcome ${socket.name} to the sever!\n`);
+
+  broadcast(`${socket.name} has joined the server \n`);
 
   socket.write("Please type in a username!");
 
   socket.on('data', (chunk) => {
 
     socket.name = chunk;
-    counter++;
     //socket.write(`Message from ${socket.name} > ${chunk}`);
     process.stdout.write(`BROADCAST MESSAGE FROM ${socket.name} > ${chunk}`);
     broadcast(`Message from ${socket.name} > ${chunk}`);
@@ -37,6 +30,15 @@ let server = net.createServer((socket) => {
     });
 
   });
+
+  //broadcast function to send messages to all clients except sender
+    function broadcast(message) {
+      for(let i = 0; i < clients.length; i++){
+        if(clients[i] !== socket){
+          clients[i].write(message);
+        }
+      }
+    }
 });
 
 server.listen(9000, '0.0.0.0',  () => {
